@@ -18,6 +18,7 @@ class Sprite {
     this.position = position;
     this.velocity = velocity;
     this.height = 150;
+    this.width = 50;
     this.lastKey;
     this.isJumped = false;
     this.attackBox = {
@@ -30,7 +31,7 @@ class Sprite {
   
   draw() {
     c.fillStyle = this.color;
-    c.fillRect(this.position.x, this.position.y, 50, this.height);
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
     // attack Box
     c.fillStyle = 'green';
@@ -122,10 +123,12 @@ function animate() {
   // enemy movement
   if(keys.ArrowLeft.pressed && (enemy.lastKey === 'ArrowLeft')) enemy.velocity.x = -5;
   else if(keys.ArrowRight.pressed && (enemy.lastKey == 'ArrowRight')) enemy.velocity.x = 5;
-
+    
   // detect for collision 
-  if(player.attackBox.postion.x + player.attackBox.width >= enemy.position.x) {
-
+  if(player.attackBox.position.x + player.attackBox.width >= enemy.position.x && player.attackBox.position.x <= enemy.position.x + enemy.width) {
+    if(player.attackBox.position.y + player.attackBox.height >= enemy.position.y && player.attackBox.position.y <= enemy.position.y +enemy.height) {
+      console.log('go');
+    }
   }
 }
 
