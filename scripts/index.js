@@ -17,7 +17,7 @@ class Sprite {
   constructor({position, velocity, color = 'red'}) {
     this.position = position;
     this.velocity = velocity;
-    this.height = 150;
+    this.height = 150;  
     this.width = 50;
     this.lastKey;
     this.isJumped = false;
@@ -27,6 +27,7 @@ class Sprite {
       height: 50
     }
     this.color = color;
+    this.isAttacking = false;
   }
   
   draw() {
@@ -34,12 +35,14 @@ class Sprite {
     c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
     // attack Box
-    c.fillStyle = 'green';
-    c.fillRect(
-      this.attackBox.position.x, 
-      this.attackBox.position.y, 
-      this.attackBox.width, 
-      this.attackBox.height);
+    if(this.isAttacking) {
+      c.fillStyle = 'green';
+      c.fillRect(
+        this.attackBox.position.x, 
+        this.attackBox.position.y, 
+        this.attackBox.width, 
+        this.attackBox.height);
+    }
   }
 
   update() {
@@ -57,6 +60,12 @@ class Sprite {
     }
     
     this.draw();
+  }
+  attack() {
+    this.isAttacking = true;
+    setTimeout(() => {
+      this.isAttacking = false;
+    }, 100)
   }
 }
 
@@ -122,11 +131,15 @@ function animate() {
 
   // enemy movement
   if(keys.ArrowLeft.pressed && (enemy.lastKey === 'ArrowLeft')) enemy.velocity.x = -5;
-  else if(keys.ArrowRight.pressed && (enemy.lastKey == 'ArrowRight')) enemy.velocity.x = 5;
+  else if(keys.ArrowRight.pressed && (enemy.lastKey === 'ArrowRight')) enemy.velocity.x = 5;
     
   // detect for collision 
-  if(player.attackBox.position.x + player.attackBox.width >= enemy.position.x && player.attackBox.position.x <= enemy.position.x + enemy.width) {
-    if(player.attackBox.position.y + player.attackBox.height >= enemy.position.y && player.attackBox.position.y <= enemy.position.y +enemy.height) {
+  if(player.attackBox.position.x + player.attackBox.width >= enemy.position.x && 
+    player.attackBox.position.x <= enemy.position.x + enemy.width && 
+    player.attackBox.position.y + player.attackBox.height >= enemy.position.y && 
+    player.attackBox.position.y <= enemy.position.y +enemy.height) {
+    if(player.isAttacking) {
+      player.isAttacking = false;
       console.log('go');
     }
   }
@@ -153,6 +166,9 @@ window.addEventListener('keydown', (event) => {
         player.isJumped = true;
         player.velocity.y = -20;
       }
+      break;
+    case ' ':
+      player.attack();
       break;
 
     case 'ArrowRight':
