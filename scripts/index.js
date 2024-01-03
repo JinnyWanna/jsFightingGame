@@ -22,7 +22,10 @@ class Sprite {
     this.lastKey;
     this.isJumped = false;
     this.attackBox = {
-      position: this.position,
+      position: {
+        x: this.position.x,
+        y: this.position.y
+      },
       width: 100,
       height: 50
     }
@@ -46,13 +49,23 @@ class Sprite {
   }
 
   update() {
+
+    // attack box position
+    if(this.lastKey === 'a' || this.lastKey === 'ArrowLeft'){
+      this.attackBox.position.x = this.position.x - this.width;
+      this.attackBox.position.y = this.position.y;
+    }
+    else {
+      this.attackBox.position.x = this.position.x;
+      this.attackBox.position.y = this.position.y;
+    }
     
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     
 
     if(this.position.y + this.height + this.velocity.y >= canvas.height) {
-      this.velocity.y = 0;
+      this.velocity.y= 0;
       this.isJumped = false
     }
     else {
@@ -127,13 +140,14 @@ function animate() {
   
   // player movement
   if(keys.a.pressed && (player.lastKey === 'a')) player.velocity.x = -5;
-  else if(keys.d.pressed && (player.lastKey == 'd')) player.velocity.x = 5;
+  else if(keys.d.pressed && (player.lastKey === 'd')) player.velocity.x = 5;
 
   // enemy movement
   if(keys.ArrowLeft.pressed && (enemy.lastKey === 'ArrowLeft')) enemy.velocity.x = -5;
   else if(keys.ArrowRight.pressed && (enemy.lastKey === 'ArrowRight')) enemy.velocity.x = 5;
     
   // detect for collision 
+  // player attack ' '
   if(player.attackBox.position.x + player.attackBox.width >= enemy.position.x && 
     player.attackBox.position.x <= enemy.position.x + enemy.width && 
     player.attackBox.position.y + player.attackBox.height >= enemy.position.y && 
@@ -141,6 +155,17 @@ function animate() {
     if(player.isAttacking) {
       player.isAttacking = false;
       console.log('go');
+    }
+  }
+
+  // enemy attack ,
+  if(enemy.attackBox.position.x + enemy.attackBox.width >= player.position.x && 
+    enemy.attackBox.position.x <= player.position.x + player.width && 
+    enemy.attackBox.position.y + enemy.attackBox.height >= player.position.y && 
+    enemy.attackBox.position.y <= player.position.y +player.height) {
+    if(enemy.isAttacking) {
+      enemy.isAttacking = false;
+      console.log('go2');
     }
   }
 }
@@ -185,6 +210,10 @@ window.addEventListener('keydown', (event) => {
         enemy.isJumped = true;
         enemy.velocity.y = -20;
       }     
+      break;
+
+    case ',':
+      enemy.attack();
       break;
   }
      
