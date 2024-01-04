@@ -1,0 +1,59 @@
+.main-div {
+  position : relative;
+  display: inline-block;
+}
+/*display가 block 상태이면 창크기에따라 화면 끝까지를 100%로 인식하게 된다.
+inline-block로 바꾸게 되면 main-div에 크기를 지정한 요소, main-canvas를 100%로 인식하게 되어 창크기에 맞는 체력바 설정이 가능해진다.*/
+
+/* .main-canvas {} */
+
+.top-bar {
+  position : absolute;
+  z-index: 100;
+
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  padding: 20px;
+  
+}
+
+.timer {
+  background-color: red;
+  height: 100px;
+  width : 100px;
+
+  flex-shrink: 0;
+}
+
+.player-health-box, .enemy-health-box {
+  position: relative;
+  width: 100%;
+  height: 30px; 
+}
+.player-health-box {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.player-health {
+  position: absolute;
+  background-color: blue;
+  top: 0; bottom: 0; right: 0;
+  width: 100%;
+}
+.enemy-health {
+  position: absolute;
+  background-color: blue;
+  top: 0; bottom: 0; left: 0;
+  width: 100%;
+}
+
+.player-empty-health, .enemy-empty-health {
+  background-color: yellow;
+  width: 100%;
+
+  height: 30px;
+}

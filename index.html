@@ -3,10 +3,27 @@
   <head>
     <meta charset="UTF-8">
     <title>Fighting Game</title>
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/topbar.css">
   </head> 
   <body>
-    <canvas class = "main-canvas"></canvas>
-
+    <div class="main-div">
+      <div class = "top-bar">
+        <!---->
+        <div class ="player-health-box">
+          <div class = "player-empty-health"></div>
+          <div class = "player-health"></div>
+        </div>
+        <!---->
+        <div class = "timer"></div>
+        <!---->
+        <div class = "enemy-health-box">
+          <div class = "enemy-empty-health"></div>
+          <div class = "enemy-health"></div>
+        </div>
+      </div>
+      <canvas class = "main-canvas"></canvas>
+    </div>
     <script src="scripts/index.js"></script>
   </body>
 </html>

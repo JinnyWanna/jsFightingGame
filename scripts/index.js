@@ -1,5 +1,3 @@
-// 이 프로젝트 끝낸후 블로그에 기록하기
-
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
@@ -31,6 +29,7 @@ class Sprite {
     }
     this.color = color;
     this.isAttacking = false;
+    this.health = 100;
   }
   
   draw() {
@@ -84,8 +83,8 @@ class Sprite {
 
 const player = new Sprite({
   position: {
-  x: 0, 
-  y: 0
+  x: 100, 
+  y: 100
   },
   velocity: {
     x: 0,
@@ -126,6 +125,15 @@ const keys = {
 
 //// function , keymove
 
+function rectangularCollision({rectangle1, rectangle2}) {
+  return (
+    rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.position.x && 
+    rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width && 
+    rectangle1.attackBox.position.y + rectangle1.attackBox.height >= rectangle2.position.y && 
+    rectangle1.attackBox.position.y <= rectangle2.position.y +rectangle2.height
+  )
+}
+
 function animate() {
   window.requestAnimationFrame(animate);
 
@@ -148,24 +156,20 @@ function animate() {
     
   // detect for collision 
   // player attack ' '
-  if(player.attackBox.position.x + player.attackBox.width >= enemy.position.x && 
-    player.attackBox.position.x <= enemy.position.x + enemy.width && 
-    player.attackBox.position.y + player.attackBox.height >= enemy.position.y && 
-    player.attackBox.position.y <= enemy.position.y +enemy.height) {
+  if(rectangularCollision({rectangle1: player, rectangle2: enemy})) {
     if(player.isAttacking) {
       player.isAttacking = false;
-      console.log('go');
+      enemy.health -= 10;
+      document.querySelector('.enemy-health').style.width = `${enemy.health}%` ;
     }
   }
 
   // enemy attack ,
-  if(enemy.attackBox.position.x + enemy.attackBox.width >= player.position.x && 
-    enemy.attackBox.position.x <= player.position.x + player.width && 
-    enemy.attackBox.position.y + enemy.attackBox.height >= player.position.y && 
-    enemy.attackBox.position.y <= player.position.y +player.height) {
+  if(rectangularCollision({rectangle1: enemy, rectangle2: player})) {
     if(enemy.isAttacking) {
       enemy.isAttacking = false;
-      console.log('go2');
+      player.health -= 10;
+      document.querySelector('.player-health').style.width = `${player.health}%` ;
     }
   }
 }
