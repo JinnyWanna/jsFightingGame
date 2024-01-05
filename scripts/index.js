@@ -1,3 +1,5 @@
+// SET CANVAS
+
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
@@ -9,6 +11,8 @@ c.fillRect(0, 0, canvas.width, canvas.height);
 ///// class
 
 const gravity = 0.7;
+
+// PLAYER CLASS
 
 class Sprite {
   
@@ -134,6 +138,44 @@ function rectangularCollision({rectangle1, rectangle2}) {
   )
 }
 
+function determineWinner({player, enemy, timerId}) {
+  clearTimeout(timerId);
+  document.querySelector('.end-message').style.display = 'flex';
+  if(player.health === enemy.health) {
+    document.querySelector('.end-message').innerHTML = 'Tie';
+  }
+  else if(player.health > enemy.health) {
+    document.querySelector('.end-message').innerHTML = 'Player 1 wins';
+  }
+  else if(player.health < enemy.health) {
+    document.querySelector('.end-message').innerHTML = 'Player 2 wins';
+  }
+}
+
+// TIMER
+
+let timer = 7;
+let timerId;
+function decreaseTimer() {
+  if(timer > 0) {
+    timerId = setTimeout(decreaseTimer, 1000);
+    timer--;
+    document.querySelector('.timer').innerHTML = timer;
+  }
+  if(timer === 0) {
+    determineWinner({
+      player : player,
+      enemy: enemy,
+      timerId
+    })
+  }
+}
+decreaseTimer();
+
+//GAME END
+
+// ANIMATION FRAME
+
 function animate() {
   window.requestAnimationFrame(animate);
 
@@ -171,6 +213,15 @@ function animate() {
       player.health -= 10;
       document.querySelector('.player-health').style.width = `${player.health}%` ;
     }
+  }
+
+  // end game based on health
+  if(enemy.health <= 0 || player.health <= 0) {
+    determineWinner({
+      player : player,
+      enemy: enemy,
+      timerId: timerId
+    })
   }
 }
 

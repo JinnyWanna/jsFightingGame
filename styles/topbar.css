@@ -20,13 +20,23 @@ inline-block로 바꾸게 되면 main-div에 크기를 지정한 요소, main-ca
   
 }
 
+/* TIMER*/
+
 .timer {
   background-color: red;
   height: 100px;
   width : 100px;
 
   flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
+
+
+/* HEALTH */
 
 .player-health-box, .enemy-health-box {
   position: relative;
@@ -56,4 +66,15 @@ inline-block로 바꾸게 되면 main-div에 크기를 지정한 요소, main-ca
   width: 100%;
 
   height: 30px;
+}
+
+.end-message {
+  position: absolute;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0; bottom: 0; right: 0; left: 0;
+
+  display: none;
 }
