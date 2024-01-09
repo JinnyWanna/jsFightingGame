@@ -8,6 +8,10 @@ canvas.height = 576;
 
 c.fillRect(0, 0, canvas.width, canvas.height);
 
+const gravity = 0.7;
+
+// canvas에 이미지 그리기, 여러 프레임인 이미지 그리기
+
 const background = new Sprite({
   position: {
     x: 0,
@@ -16,7 +20,15 @@ const background = new Sprite({
   imageSrc : './img/background.png'
 })
 
-const gravity = 0.7;
+const shop = new Sprite({
+  position: {
+    x: 600,
+    y: 128
+  },
+  imageSrc : './img/shop.png',
+  scale: 2.75,
+  framesMax: 6
+})
 
 const player = new Fighter({
   position: {
@@ -74,7 +86,7 @@ function animate() {
   c.fillStyle = 'black';
   c.fillRect(0,0, canvas.width, canvas.height);
   background.update();
-
+  shop.update();
   player.update();
   enemy.update();
 
