@@ -1,7 +1,7 @@
 class Sprite {
-  constructor({position, imageSrc, scale = 1, framesMax = 1}) {
+  constructor({ position, imageSrc, scale = 1, framesMax = 1, offset = {x: 0, y: 0}}) {
     this.position = position;
-    this.height = 150;  
+    this.height = 150;
     this.width = 50;
     this.image = new Image();
     this.image.src = imageSrc;
@@ -10,26 +10,28 @@ class Sprite {
     this.framesCurrent = 0;
     this.framesElapsed = 0;
     this.framesHold = 10;
+    this.offset = offset;
   }
+
+
   draw() {
     c.drawImage(
       this.image,
-      this.framesCurrent*(this.image.width / this.framesMax),
+      this.framesCurrent * (this.image.width / this.framesMax),
       0,
       this.image.width / this.framesMax,
       this.image.height,
-      this.position.x, 
-      this.position.y, 
-      (this.image.width / this.framesMax) * this.scale, 
+      this.position.x - this.offset.x,
+      this.position.y - this.offset.y,
+      (this.image.width / this.framesMax) * this.scale,
       this.image.height * this.scale);
   }
 
-  update() {
-    this.draw();
+  animateFrames() {
     this.framesElapsed++;
 
-    if(this.framesElapsed % this.framesHold === 0) {
-      if(this.framesCurrent < this.framesMax - 1) {
+    if (this.framesElapsed % this.framesHold === 0) {
+      if (this.framesCurrent < this.framesMax - 1) {
         this.framesCurrent++;
       }
       else {
@@ -37,13 +39,26 @@ class Sprite {
       }
     }
   }
+
+  update() {
+    this.draw();
+    this.animateFrames();
+  }
 }
-class Fighter {
-  
-  constructor({position, velocity, color = 'red'}) {
-    this.position = position;
+class Fighter extends Sprite {
+
+  constructor({ position, velocity, color = 'red', imageSrc, scale = 1, framesMax = 1, offset = {x: 0, y: 0}, sprites}) { // 상속시 생성자는 상속 안됨 , 내부 함수들만 상속
+    
+    super({
+      position,
+      imageSrc,
+      scale,
+      framesMax,
+      offset
+    });
+    
     this.velocity = velocity;
-    this.height = 150;  
+    this.height = 150;
     this.width = 50;
     this.lastKey;
     this.isJumped = false;
@@ -52,33 +67,30 @@ class Fighter {
         x: this.position.x,
         y: this.position.y
       },
+      offset,
       width: 100,
       height: 50
     }
     this.color = color;
     this.isAttacking = false;
     this.health = 100;
-  }
-  
-  draw() {
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+    this.framesHold = 5;
 
-    // attack Box
-    if(this.isAttacking) {
-      c.fillStyle = 'green';
-      c.fillRect(
-        this.attackBox.position.x, 
-        this.attackBox.position.y, 
-        this.attackBox.width, 
-        this.attackBox.height);
+    this.sprites = sprites;
+
+    for(const sprite in this.sprites) {
+      this.sprites[sprite].image = new Image(); 
+      this.sprites[sprite].image.src = this.sprites[sprite].imageSrc;
     }
+    
   }
+
 
   update() {
 
+    this.animateFrames();
     // attack box position
-    if(this.lastKey === 'a' || this.lastKey === 'ArrowLeft'){
+    if (this.lastKey === 'a' || this.lastKey === 'ArrowLeft') {
       this.attackBox.position.x = this.position.x - this.width;
       this.attackBox.position.y = this.position.y;
     }
@@ -86,19 +98,19 @@ class Fighter {
       this.attackBox.position.x = this.position.x;
       this.attackBox.position.y = this.position.y;
     }
-    
+
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    
 
-    if(this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
-      this.velocity.y= 0;
+
+    if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
+      this.velocity.y = 0;
       this.isJumped = false
     }
     else {
       this.velocity.y += gravity;
     }
-    
+
     this.draw();
   }
   attack() {
