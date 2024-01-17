@@ -238,7 +238,7 @@ function animate() {
       enemy.takeHit();
       player.isAttacking = false;
       
-      document.querySelector('.enemy-health').style.width = `${enemy.health}%` ;
+      gsap.to('.enemy-health', { width: enemy.health + '%' });
     }
   }
   // if player missed
@@ -252,8 +252,8 @@ function animate() {
     if(enemy.isAttacking && enemy.framesCurrent === 2) {
       enemy.isAttacking = false;
       player.takeHit();
-      document.querySelector('.player-health').style.width = `${player.health}%` ;
       
+      gsap.to('.player-health', { width: player.health + '%' });
     }
   }
 
