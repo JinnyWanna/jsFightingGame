@@ -1,4 +1,4 @@
-function rectangularCollision({rectangle1, rectangle2}) {
+function rectangularCollision({rectangle1, rectangle2}) { // 사각형 안에있으면 때린다
   return (
     rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.position.x && 
     rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width && 
