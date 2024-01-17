@@ -32,7 +32,7 @@ const shop = new Sprite({
 
 const player = new Fighter({
   position: {
-  x: 0, 
+  x: 180, 
   y: 0
   },
   velocity: {
@@ -93,8 +93,8 @@ const player = new Fighter({
 
 const enemy = new Fighter({
   position: {
-  x: 400, 
-  y: 100
+  x: 724, 
+  y: 0
   },
   velocity: {
     x: 0,
@@ -176,10 +176,13 @@ decreaseTimer();
 function animate() {
   window.requestAnimationFrame(animate);
 
-  c.fillStyle = 'black';
-  c.fillRect(0,0, canvas.width, canvas.height);
+  // c.fillStyle = 'black';
+  // c.fillRect(0,0, canvas.width, canvas.height);
   background.update();
   shop.update();
+  c.fillStyle = 'rgba(255,255,255,0.15)'
+  c.fillRect(0,0,canvas.width,canvas.height);
+  // 약간의 배경 투명효과, 캐릭터가 잘보임
   player.update();
   enemy.update();
 

@@ -23,8 +23,9 @@ inline-block로 바꾸게 되면 main-div에 크기를 지정한 요소, main-ca
 /* TIMER*/
 
 .timer {
-  background-color: red;
-  height: 100px;
+  background-color: black;
+  color: white;
+  height: 50px;
   width : 100px;
 
   flex-shrink: 0;
@@ -33,6 +34,7 @@ inline-block로 바꾸게 되면 main-div에 크기를 지정한 요소, main-ca
   align-items: center;
   justify-content: center;
 
+  border: 4px solid white;
 }
 
 
@@ -41,31 +43,41 @@ inline-block로 바꾸게 되면 main-div에 크기를 지정한 요소, main-ca
 .player-health-box, .enemy-health-box {
   position: relative;
   width: 100%;
-  height: 30px; 
-}
-.player-health-box {
+  height: 30px;
+  
   display: flex;
   justify-content: flex-end;
 }
 
+.player-health-box {
+  border-color: white;
+  border-style: solid;
+  border-width: 4px 0px 4px 4px
+}
+
+.enemy-health-box {
+  border-color: white;
+  border-style: solid;
+  border-width: 4px 4px 4px 0px
+}
+
+
 .player-health {
   position: absolute;
-  background-color: blue;
+  background-color:#818CF8;
   top: 0; bottom: 0; right: 0;
   width: 100%;
 }
 .enemy-health {
   position: absolute;
-  background-color: blue;
+  background-color:#818CF8;
   top: 0; bottom: 0; left: 0;
   width: 100%;
 }
 
 .player-empty-health, .enemy-empty-health {
-  background-color: yellow;
+  background-color: red;
   width: 100%;
-
-  height: 30px;
 }
 
 .end-message {
